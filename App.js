@@ -22,7 +22,7 @@ export default function App() {
   const handleAddTodo = () => {
     Keyboard.dismiss();
     if (taskValue === '') {
-      Alert.alert('Error', 'Please enter a todo', { text: 'OK' });
+      Alert.alert('Error', 'Please enter a todo', [{ text: 'OK' }]);
     } else {
       setTodo([
         {
@@ -35,44 +35,50 @@ export default function App() {
     setTaskValue('');
   };
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.signinContainer}>
-        <ScrollView>
-          <Text style={styles.text}>Today's tasks!</Text>
-          <View style={styles.showTodo}>
-            {todo === [] ? (
-              <Text style={{ fontSize: 20, color: '#bbb' }}>No todo's yet</Text>
-            ) : (
-              <Todos todos={todo} setTodos={setTodo} />
-            )}
+    <>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.signinContainer}>
+          <View>
+            <Text style={styles.text}>Today's tasks!</Text>
+            <ScrollView style={styles.showTodo}>
+              {todo === [] ? (
+                <Text style={{ fontSize: 20, color: '#bbb' }}>
+                  No todo's yet
+                </Text>
+              ) : (
+                <View style={styles.todoStyles}>
+                  <Todos todos={todo} setTodos={setTodo} />
+                </View>
+              )}
+            </ScrollView>
           </View>
-        </ScrollView>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={generalStyles.inputTaskManager}
-        >
-          <TextInput
-            placeholder='Add a todo'
-            defaultValue={taskValue}
-            onChangeText={(text) => setTaskValue(text)}
-            style={generalStyles.textInput}
-          />
-          <TouchableOpacity onPress={handleAddTodo}>
-            <View style={generalStyles.buttonView}>
-              <Text style={generalStyles.buttonText}>+</Text>
-            </View>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
-        <StatusBar style='dark' />
-      </View>
-    </TouchableWithoutFeedback>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={generalStyles.inputTaskManager}
+          >
+            <TextInput
+              placeholder='Add a todo'
+              defaultValue={taskValue}
+              onChangeText={(text) => setTaskValue(text)}
+              style={generalStyles.textInput}
+            />
+            <TouchableOpacity onPress={handleAddTodo}>
+              <View style={generalStyles.buttonView}>
+                <Text style={generalStyles.buttonText}>+</Text>
+              </View>
+            </TouchableOpacity>
+          </KeyboardAvoidingView>
+          <StatusBar style='dark' />
+        </View>
+      </TouchableWithoutFeedback>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   signinContainer: {
     flex: 1,
-    backgroundColor: '#f3f3f3',
+    backgroundColor: '#e9e9e9',
     paddingVertical: 60,
   },
   userContainer: {
@@ -80,10 +86,19 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
+    // color: '#ffd52e',
+    fontWeight: 'bold',
     marginBottom: 20,
     paddingHorizontal: 20,
   },
   showTodo: {
     paddingHorizontal: 20,
+  },
+  todoStyles: {
+    backgroundColor: '#fff',
+    borderColor: '#fff',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingLeft: 15,
   },
 });

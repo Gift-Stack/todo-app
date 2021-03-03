@@ -10,19 +10,18 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import { Swipeable } from 'react-native-gesture-handler';
 import { generalStyles } from '../../generalStyles';
 
 export const TodoItem = ({ todo, deleteItem }) => {
-  // States
   const [done, setDone] = useState(false);
   const [modal, setModal] = useState(false);
 
-  // Done Handler
   const handleDoneTodo = () => {
     setDone(!done);
   };
-  // Swipe and delete handler
+
   const RightAction = () => (
     <TouchableOpacity
       style={styles.rightAction}
@@ -34,8 +33,16 @@ export const TodoItem = ({ todo, deleteItem }) => {
       </Text>
     </TouchableOpacity>
   );
+  const getCurrentDate = () => {
+    const date = new Date().getDate();
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+    const hour = new Date().getHours();
+    const minute = new Date().getMinutes();
 
-  // Update Modal Handler
+    console.log(date);
+    return `${date}-${month}-${year} , ${hour}:${minute}`;
+  };
 
   return (
     <Swipeable
@@ -63,8 +70,6 @@ export const TodoItem = ({ todo, deleteItem }) => {
             >
               <TextInput
                 placeholder='Update todo'
-                // defaultValue={taskValue}
-                // onChangeText={(text) => setTaskValue(text)}
                 style={generalStyles.textInput}
               />
             </KeyboardAvoidingView>
@@ -82,17 +87,36 @@ export const TodoItem = ({ todo, deleteItem }) => {
           Alert.alert(
             'Attention',
             'Please longpress text to update and swipe left to delete',
-            { text: 'OK' }
+            [{ text: 'OK' }]
           )
         }
         onLongPress={() => setModal(true)}
+        style={{
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+          borderBottomWidth: 1,
+          borderBottomColor: 'lightgrey',
+          backgroundColor: '#fff',
+          borderRightColor: '#fff',
+          borderRightWidth: 1,
+          borderTopRightRadius: 10,
+          borderBottomRightRadius: 10,
+        }}
       >
         <View style={styles.itemView}>
           <Text
             style={
               done === true
-                ? { textDecorationLine: 'line-through' }
-                : { textDecorationLine: 'none' }
+                ? {
+                    textDecorationLine: 'line-through',
+                    fontWeight: 'bold',
+                    fontSize: 18,
+                  }
+                : {
+                    textDecorationLine: 'none',
+                    fontWeight: 'bold',
+                    fontSize: 18,
+                  }
             }
           >
             {todo.value}
@@ -105,6 +129,7 @@ export const TodoItem = ({ todo, deleteItem }) => {
             {done && <Text>&#10004;</Text>}
           </TouchableOpacity>
         </View>
+        <Text style={{ color: '#ffd52e' }}>{getCurrentDate()}</Text>
       </TouchableOpacity>
     </Swipeable>
   );
@@ -117,11 +142,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    borderWidth: 1,
-    borderBottomColor: '#ccc',
-    borderColor: '#fff',
-    backgroundColor: '#fff',
-    padding: 15,
     marginBottom: 0,
   },
   checkbox: {
